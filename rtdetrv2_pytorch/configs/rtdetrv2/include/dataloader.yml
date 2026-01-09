@@ -1,0 +1,38 @@
+
+train_dataloader: 
+  dataset: 
+    transforms:
+      ops:
+        - {type: RandomPhotometricDistort, p: 0.5}
+        - {type: RandomZoomOut, fill: 0}
+        - {type: RandomIoUCrop, p: 0.8}
+        - {type: SanitizeBoundingBoxes, min_size: 1}
+        - {type: RandomHorizontalFlip}
+        - {type: Resize, size: [640, 640], }
+        - {type: SanitizeBoundingBoxes, min_size: 1}
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}   
+        - {type: ConvertBoxes, fmt: 'cxcywh', normalize: True}
+
+#        - { type: CLAHEEnhance, p: 0.3, clip_limit: 3.0 }
+#        - { type: NBISimulation, p: 0.2, blue_factor: 1.5, green_factor: 1.2 }
+#        - { type: RandomColorJitter, p: 0.3, brightness: 0.3, contrast: 0.3 }
+#        - { type: RandomEqualize, p: 0.2 }
+  
+  collate_fn:
+    type: BatchImageCollateFunction
+    scales: [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
+  shuffle: True
+  
+  total_batch_size: 9 # total batch size equals to 16 (4 * 4)
+  num_workers: 5
+
+
+val_dataloader:
+  dataset: 
+    transforms:
+      ops: 
+        - {type: Resize, size: [640, 640]}
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}   
+  shuffle: False
+  total_batch_size: 9
+  num_workers: 5

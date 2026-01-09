@@ -1,0 +1,37 @@
+evaluator:
+  iou_types:
+  - bbox
+  type: CocoEvaluator
+num_classes: 1
+remap_mscoco_category: false
+task: detection
+train_dataloader:
+  collate_fn:
+    type: BatchImageCollateFunction
+  dataset:
+    ann_file: d:\PROJECTS\Door Detection\inhouse_data\annotations\instances_train.json
+    img_folder: d:\PROJECTS\Door Detection\inhouse_data\images
+    return_masks: false
+    transforms:
+      ops: null
+      type: Compose
+    type: CocoDetection
+  drop_last: true
+  num_workers: 4
+  shuffle: true
+  type: DataLoader
+val_dataloader:
+  collate_fn:
+    type: BatchImageCollateFunction
+  dataset:
+    ann_file: d:\PROJECTS\Door Detection\inhouse_data\annotations\instances_val.json
+    img_folder: d:\PROJECTS\Door Detection\inhouse_data\images
+    return_masks: false
+    transforms:
+      ops: null
+      type: Compose
+    type: CocoDetection
+  drop_last: false
+  num_workers: 4
+  shuffle: false
+  type: DataLoader
